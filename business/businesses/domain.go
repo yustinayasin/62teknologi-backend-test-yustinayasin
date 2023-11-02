@@ -20,8 +20,10 @@ type Business struct {
 
 type BusinessUseCaseInterface interface {
 	Add(business Business) (Business, error)
+	Edit(business Business, id int) (Business, error)
 }
 
 type BusinessRepoInterface interface {
 	Add(business Business) (Business, error)
+	Edit(business Business, id int) (Business, error)
 }

@@ -37,6 +37,7 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/business/add", businessControllerInterface.Add)
+	r.HandleFunc("/business/edit/{id}", businessControllerInterface.Edit)
 
 	// listen port
 	err = http.ListenAndServe(":3000", r)
