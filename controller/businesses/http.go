@@ -3,6 +3,7 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -167,5 +168,44 @@ func (controller *BusinessController) Edit(res http.ResponseWriter, req *http.Re
 	 }`)
 
 	utils.ReturnJsonResponse(res, http.StatusCreated, HandlerMessage)
+	return
+}
+
+func (controller *BusinessController) Delete(res http.ResponseWriter, req *http.Request) {
+	// check the method
+	if req.Method != "DELETE" {
+		// Add the response return message
+		HandlerMessage := []byte(`{
+		"success": false,
+		"message": "Check your HTTP method: Invalid HTTP method executed",
+		}`)
+
+		utils.ReturnJsonResponse(res, http.StatusMethodNotAllowed, HandlerMessage)
+		return
+	}
+
+	vars := mux.Vars(req)
+	id := vars["id"]
+	businessId, _ := strconv.Atoi(id)
+
+	_, errRepo := controller.usecase.Delete(businessId)
+
+	if errRepo != nil {
+		fmt.Println(errRepo)
+		HandlerMessage := []byte(`{
+		"success": false,
+		"message": "Business not found",
+		}`)
+
+		utils.ReturnJsonResponse(res, http.StatusMethodNotAllowed, HandlerMessage)
+		return
+	}
+
+	HandlerMessage := []byte(`{
+		"success": true,
+		"message": "Business was successfully deleted",
+	}`)
+
+	utils.ReturnJsonResponse(res, http.StatusMethodNotAllowed, HandlerMessage)
 	return
 }

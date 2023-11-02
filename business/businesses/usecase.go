@@ -142,3 +142,17 @@ func (businessUseCase *BusinessUseCase) Edit(business Business, id int) (Busines
 
 	return businessRepo, nil
 }
+
+func (businessUseCase *BusinessUseCase) Delete(id int) (Business, error) {
+	if id == 0 {
+		return Business{}, errors.New("Business ID empty")
+	}
+
+	businessRepo, err := businessUseCase.repo.Delete(id)
+
+	if err != nil {
+		return Business{}, err
+	}
+
+	return businessRepo, nil
+}

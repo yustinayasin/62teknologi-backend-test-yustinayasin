@@ -38,6 +38,7 @@ func main() {
 
 	r.HandleFunc("/business/add", businessControllerInterface.Add)
 	r.HandleFunc("/business/edit/{id}", businessControllerInterface.Edit)
+	r.HandleFunc("/business/delete/{id}", businessControllerInterface.Delete)
 
 	// listen port
 	err = http.ListenAndServe(":3000", r)

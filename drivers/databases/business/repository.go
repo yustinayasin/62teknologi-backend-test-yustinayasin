@@ -76,3 +76,28 @@ func (repo *BusinessRepository) Edit(business businesses.Business, id int) (busi
 
 	return newBusiness.ToUsecase(), nil
 }
+
+func (repo *BusinessRepository) Delete(id int) (businesses.Business, error) {
+	var businessDB Business
+
+	//connection database
+	db, err := helpers.NewDatabase()
+
+	if err != nil {
+		return businesses.Business{}, err
+	}
+
+	if db == nil {
+		fmt.Println("Database connection is nil")
+		return businesses.Business{}, errors.New("database connection is nil")
+	}
+
+	_, err = db.DB.Exec("DELETE FROM businesses WHERE ID = $1", id)
+
+	//kalo ngecek ga ada id kayak gitu pake result kah?
+	if err != nil {
+		return businesses.Business{}, err
+	}
+
+	return businessDB.ToUsecase(), nil
+}
