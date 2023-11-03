@@ -1,12 +1,17 @@
 package main
 
 import (
-	"business/helpers"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"yelp-business/helpers"
 
+	businessUsecase "yelp-business/business/businesses"
+	businessController "yelp-business/controller/businesses"
+	businessRepo "yelp-business/drivers/databases/business"
+
+	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 )
 
@@ -25,8 +30,18 @@ func main() {
 
 	fmt.Println("Connected!")
 
+	businessRepoInterface := businessRepo.NewBusinessRepository(db)
+	businessUseCaseInterface := businessUsecase.NewUseCase(businessRepoInterface)
+	businessControllerInterface := businessController.NewBusinessController(businessUseCaseInterface)
+
+	r := mux.NewRouter()
+
+	r.HandleFunc("/business/add", businessControllerInterface.Add)
+	r.HandleFunc("/business/edit/{id}", businessControllerInterface.Edit)
+	r.HandleFunc("/business/delete/{id}", businessControllerInterface.Delete)
+
 	// listen port
-	err = http.ListenAndServe(":3000", nil)
+	err = http.ListenAndServe(":3000", r)
 
 	// print any server-based error messages
 	if err != nil {
