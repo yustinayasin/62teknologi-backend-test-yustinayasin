@@ -101,3 +101,35 @@ func (repo *BusinessRepository) Delete(id int) (businesses.Business, error) {
 
 	return businessDB.ToUsecase(), nil
 }
+
+// func (repo *BusinessRepository) GetBusiness() ([]businesses.Business, error) {
+// 	var scannedBusiness ScannedBusiness
+
+// 	//connection database
+// 	db, err := helpers.NewDatabase()
+
+// 	if err != nil {
+// 		return []businesses.Business{}, err
+// 	}
+
+// 	if db == nil {
+// 		fmt.Println("Database connection is nil")
+// 		return []businesses.Business{}, errors.New("database connection is nil")
+// 	}
+
+// 	row := db.DB.QueryRow("SELECT businesses.*, (SELECT json_agg(categories) FROM categories WHERE categories.id IN (SELECT category_id FROM business_categories WHERE business_id = businesses.id)) AS categories, json_build_object('id', coordinates.id, 'latitude', coordinates.latitude, 'longitude', coordinates.longitude) AS coordinate, json_build_object('id', locations.id, 'address1', locations.address1, 'address2', locations.address2, 'address3', locations.address3, 'city', locations.city, 'country', locations.country, 'zip_code', locations.zip_code, 'state', locations.state, 'display_address', locations.display_address) AS location,(SELECT json_agg(json_build_object('id', transactions.id, 'name', transactions.name)) FROM transactions WHERE transactions.id IN (SELECT transaction_id FROM business_transactions WHERE business_id = businesses.id)) AS transactions FROM businesses LEFT JOIN coordinates ON businesses.id_coordinates = coordinates.id LEFT JOIN locations ON businesses.id_locations = locations.id")
+
+// 	if err := row.Scan(&scannedBusiness.ID, &scannedBusiness.Alias, &scannedBusiness.Name, &scannedBusiness.ImageURL, &scannedBusiness.IsClosed, &scannedBusiness.URL, &scannedBusiness.ReviewCount, &scannedBusiness.Rating, &scannedBusiness.Coordinates.ID, &scannedBusiness.Coordinates.Latitude, &scannedBusiness.Coordinates.Longitude, &scannedBusiness.Locations.ID, &scannedBusiness.Locations.Address1, &scannedBusiness.Locations.Address2, &scannedBusiness.Locations.Address3, &scannedBusiness.Locations.City, &scannedBusiness.Locations.Country, &scannedBusiness.Locations.ZipCode, &scannedBusiness.Locations.State, &scannedBusiness.Locations.DisplayAddress, &scannedBusiness.Categories, &scannedBusiness.Transactions); err != nil {
+// 		if err == sql.ErrNoRows {
+// 			return scannedBusiness, fmt.Errorf("albumsById %d: no such album", id)
+// 		}
+// 		return scannedBusiness, fmt.Errorf("albumsById %d: %v", id, err)
+// 	}
+
+// 	if result.Error != nil {
+// 		return []businesses.Business{}, result.Error
+// 	}
+
+// 	Kalo mau mengubah array
+// 	return ToUsecaseList(businessesDb), nil
+// }

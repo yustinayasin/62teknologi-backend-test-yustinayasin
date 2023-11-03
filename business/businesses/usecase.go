@@ -156,3 +156,13 @@ func (businessUseCase *BusinessUseCase) Delete(id int) (Business, error) {
 
 	return businessRepo, nil
 }
+
+// func (businessUseCase *BusinessUseCase) GetBusiness() ([]Business, error) {
+// 	businessRepo, err := businessUseCase.repo.GetBusiness()
+
+// 	if err != nil {
+// 		return []Business{}, err
+// 	}
+
+// 	return businessRepo, nil
+// }

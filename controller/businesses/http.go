@@ -62,6 +62,7 @@ func (controller *BusinessController) Add(res http.ResponseWriter, req *http.Req
 	err = json.NewDecoder(req.Body).Decode(&business)
 
 	if err != nil {
+		fmt.Println(err)
 		HandlerMessage := []byte(`{
 		"success": false,
 		"message": "Error parsing the business data",
@@ -76,6 +77,7 @@ func (controller *BusinessController) Add(res http.ResponseWriter, req *http.Req
 	_, errRepo := controller.usecase.Add(*business.ToUsecase())
 
 	if errRepo != nil {
+		fmt.Println(errRepo)
 		HandlerMessage := []byte(`{
 		"success": false,
 		"message": "Error in repo,
@@ -209,3 +211,25 @@ func (controller *BusinessController) Delete(res http.ResponseWriter, req *http.
 	utils.ReturnJsonResponse(res, http.StatusMethodNotAllowed, HandlerMessage)
 	return
 }
+
+// func (controller *BusinessController) GetBusiness(res http.ResponseWriter, req *http.Request) {
+// 	_, errRepo := controller.usecase.GetBusiness()
+
+// 	if errRepo != nil {
+// 		HandlerMessage := []byte(`{
+// 			"success": false,
+// 			"message": "There is no business",
+// 		}`)
+
+// 		utils.ReturnJsonResponse(res, http.StatusMethodNotAllowed, HandlerMessage)
+// 		return
+// 	}
+
+// 	HandlerMessage := []byte(`{
+// 		"success": true,
+// 		"message": "Get business",
+// 	}`)
+
+// 	utils.ReturnJsonResponse(res, http.StatusMethodNotAllowed, HandlerMessage)
+// 	return
+// }
